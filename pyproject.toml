@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "node_vector_distance"
+version = "0.0.13"
+authors = [
+  { name="Michele Coscia", email="mcos@itu.dk" },
+]
+description = "A package to calculate node attribute distances and statistics over a complex network."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+dependencies = [
+  "torch",
+  "numpy",
+  "torch_geometric",
+  "networkx",
+  "scipy",
+]
+
+[project.urls]
+Homepage = "https://github.com/mikk-c/node_vector_distance"
+Issues = "https://github.com/mikk-c/node_vector_distance/issues"
