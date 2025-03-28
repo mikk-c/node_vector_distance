@@ -31,6 +31,15 @@ def _corr_gpu(tensor, i, j, Linv = None, ER = None, W = None):
    return float((numerator / (denominator_i * denominator_j)).cpu())
 
 def network_correlation(data, v1_index, v2_index, Linv = None, ER = None, W = None, method = "gpu"):
+   """Calculates the correlation of two numeric node attribute vectors over a given network.
+   :param data: The data container containing the graph in data["edges"] and the node attributes in data["node_vects"]
+   :type data: [ParamType](, optional)
+   ...
+   :raises [ErrorType]: [ErrorDescription]
+   ...
+   :return: [ReturnDescription]
+   :rtype: [ReturnType]
+   """
    if method == "gpu":
       return _corr_gpu(data, v1_index, v2_index, Linv = Linv, ER = ER, W = W)
    else:
