@@ -9,7 +9,7 @@
 project = 'Node Vector Distance'
 copyright = '2025, Michele Coscia'
 author = 'Michele Coscia'
-release = '0.0.14'
+release = '0.0.20'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
