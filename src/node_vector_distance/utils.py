@@ -18,11 +18,11 @@ def _Linv_gpu(tensor):
    L = torch_geometric.utils.to_dense_adj(edge_index = L_ei, edge_attr = Lew)[0]
    return torch.linalg.pinv(L, hermitian = True)
 
-def laplacian_pseudoinverse(data, method = "gpu"):
-   if method == "gpu":
-      return _Linv_gpu(data)
+def laplacian_pseudoinverse(attr_graph, workflow = "gpu"):
+   if workflow == "gpu":
+      return _Linv_gpu(attr_graph.data)
    else:
-      return _Linv_cpu(data["edge_index"])
+      return _Linv_cpu(attr_graph.data["edge_index"])
 
 #### Calculate a matrix of all shortest path lengths
 def _spl(x):
@@ -34,15 +34,15 @@ def _spl(x):
       )
    )
 
-def spl_matrix(data, nodes = None, n_proc = 1):
+def spl_matrix(edge_index, nodes = None, n_proc = 1):
    if nodes is None:
-      nodes = list(range(len(data["edge_index"].nodes)))
+      nodes = list(range(len(edge_index.nodes)))
    manager = Manager()
    spls = manager.dict()
    pool = Pool(processes = n_proc)
    _ = pool.map(
       _spl,
-      [(data["edge_index"], n, spls) for n in nodes]
+      [(edge_index, n, spls) for n in nodes]
    )
    pool.close()
    pool.join()
@@ -67,8 +67,8 @@ def _er_gpu(tensor, Linv = None):
    pinv_diagonal = torch.diagonal(Linv)
    return pinv_diagonal.unsqueeze(0) +  pinv_diagonal.unsqueeze(1) - 2 * Linv
 
-def effective_resistance(data, method = "gpu", Linv = None):
-   if method == "gpu":
-      return _er_gpu(data, Linv = Linv)
+def effective_resistance(attr_graph, workflow = "gpu", Linv = None):
+   if workflow == "gpu":
+      return _er_gpu(attr_graph.data, Linv = Linv)
    else:
-      return _er_cpu(data["edge_index"], Linv = Linv)
+      return _er_cpu(attr_graph.data["edge_index"], Linv = Linv)

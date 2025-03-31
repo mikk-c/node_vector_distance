@@ -10,7 +10,7 @@ See [TODO] for complete documentation.
 
 import torch
 
-__version__ = "0.0.14"
+__version__ = "0.0.20"
 __device__ = "cuda" if torch.cuda.is_available() else "cpu"
 
 from .utils import *

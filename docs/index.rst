@@ -43,3 +43,4 @@ References
    :caption: Contents:
    
    quickstart
+   reference

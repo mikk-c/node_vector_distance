@@ -41,14 +41,14 @@ def _ge_pairwise_gpu(tensor, Linv = None):
       distances[i,i + 1:] = (diff * (Linv @ diff.T).T).sum(dim = 1)
    return torch.sqrt(distances + distances.T)
 
-def generalized_euclidean(data, v1_index, v2_index, Linv = None, method = "gpu"):
-   if method == "gpu":
-      return _ge_gpu(data, v1_index, v2_index, Linv = Linv)
+def generalized_euclidean(attr_graph, v1_index, v2_index, Linv = None, workflow = "gpu"):
+   if workflow == "gpu":
+      return _ge_gpu(attr_graph.data, v1_index, v2_index, Linv = Linv)
    else:
-      return _ge_cpu(data, v1_index, v2_index, Linv = Linv)
+      return _ge_cpu(attr_graph.data, v1_index, v2_index, Linv = Linv)
 
-def pairwise_generalized_euclidean(data, Linv = None, method = "gpu"):
-   if method == "gpu":
-      return _ge_pairwise_gpu(data, Linv = Linv)
+def pairwise_generalized_euclidean(attr_graph, Linv = None, workflow = "gpu"):
+   if workflow == "gpu":
+      return _ge_pairwise_gpu(attr_graph.data, Linv = Linv)
    else:
-      return _ge_pairwise_cpu(data, Linv = Linv)
+      return _ge_pairwise_cpu(attr_graph.data, Linv = Linv)
