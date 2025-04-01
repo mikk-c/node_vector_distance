@@ -1,2 +1,7 @@
 nbsphinx
 node_vector_distance
+numpy
+scipy
+networkx
+torch
+torch_geometric
