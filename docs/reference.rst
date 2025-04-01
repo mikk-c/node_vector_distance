@@ -6,4 +6,5 @@ Functions
 .. toctree::
   :titlesonly:
 
+  node_vector_distance
   correlation

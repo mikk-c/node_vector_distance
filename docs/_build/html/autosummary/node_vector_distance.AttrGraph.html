@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>node_vector_distance.AttrGraph &#8212; Node Vector Distance 0.0.20 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=056c92e6"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="node-vector-distance-attrgraph">
+<h1>node_vector_distance.AttrGraph<a class="headerlink" href="#node-vector-distance-attrgraph" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="node_vector_distance.AttrGraph">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">node_vector_distance.</span></span><span class="sig-name descname"><span class="pre">AttrGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_attr_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gpu'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#node_vector_distance.AttrGraph" title="Link to this definition">¶</a></dt>
+<dd><p>General graph class.</p>
+<p>This class holds a graph and all of its node and edge attributes. It can only be built
+starting from a <code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.Graph</span></code> object <cite>G</cite> and a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.Dataframe</span></code> <cite>df</cite>.
+The <code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.Graph</span></code> must be undirected, none of the functions provided in this
+library are defined for directed graphs. The <code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.Graph</span></code> can have edge
+weights, which must be stored in the <cite>weight</cite> edge attribute of <cite>G</cite>.</p>
+<p>The graph data (nodes, edges, and all of their attributes), will be sored in
+<cite>AttrGraph.data</cite> with this structure:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><cite>data[“edge_index”]</cite> contains the edges.</p></li>
+<li><p><cite>data[“node_vects”]</cite> contains the node attributes. It is a matrix with one node
+per row and one attribute per column. The rows are sorted so that the first row
+refers to the node with id 0, the second row to node with id 1, and so on. The
+columns have the same order as the <cite>df</cite> parameter.</p></li>
+<li><p><cite>data[“edge_weights”]</cite> contains a sequence of edge weights, in the same order as
+the edges in <cite>data[“edge_index”]</cite> (so the n-th element of this sequence is the
+weight of the n-th edge in <cite>data[“edge_index”]</cite>).</p></li>
+<li><p><cite>data[“edge_attrs”]</cite> contains a matrix of edge attributes. Each row is an edge,
+in the same order as <cite>data[“edge_index”]</cite> and <cite>data[“edge_weights”]</cite>, and each
+column is an edge attribute, with the same order as specified in <cite>edge_attr_order</cite>.</p></li>
+</ol>
+</div></blockquote>
+<p>You can specify the order in which the edge attributes should be stored, which is useful
+if you use a GPU workflow and therefore will work with a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">torch_geometric.data.Data</span></code>. This can be done by passing the list of attributes
+names as the <cite>edge_attr_order</cite> optionl parameter. If not passed, it will default with
+whatever order edge attributes have in the first edge in <cite>G</cite>.</p>
+<p>To specify which workflow you want to use, you can set the optional <cite>workflow</cite> parameter
+to be either <cite>“gpu”</cite> (the default), or <cite>“cpu”</cite>. If <cite>workflow=”gpu”</cite> (the default) then
+<cite>AttrGraph.data</cite> is actually a <code class="xref py py-class docutils literal notranslate"><span class="pre">torch_geometric.data.Data</span></code> object. If
+<cite>workflow=”cpu”</cite>, then <cite>AttrGraph.data</cite> is a dictionary containing <cite>G</cite> and <cite>df</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="node_vector_distance.AttrGraph.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_attr_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gpu'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#node_vector_distance.AttrGraph.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#node_vector_distance.AttrGraph.__init__" title="node_vector_distance.AttrGraph.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(G, df[, edge_attr_order, workflow])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Node Vector Distance</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Functions</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Michele Coscia.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/autosummary/node_vector_distance.AttrGraph.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
