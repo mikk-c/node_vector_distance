@@ -77,6 +77,13 @@ class AttrGraph(object):
    to be either `"gpu"` (the default), or `"cpu"`. If `workflow="gpu"` (the default) then
    `AttrGraph.data` is actually a :class:`torch_geometric.data.Data` object. If
    `workflow="cpu"`, then `AttrGraph.data` is a dictionary containing `G` and `df`.
+
+   Since ``NVD`` methods only work on networks with a single connected component, and
+   ``torch_geometric`` requires numeric ids without gaps, `AttrGraph.data` will only
+   contain the nodes and edges in the largest connected component of `G`. Moreover, the
+   node ids of `G` will be changed so that they start from `0`to `n` without gaps. For
+   your convenience, `AttrGraph.nodemap` contains a dictionary that maps the node ids
+   in `G`with the node ids in `AttrGraph.data`.
    """
    def __init__(self, G, df, edge_attr_order = None, workflow = "gpu"):
       if not type(G) is nx.Graph:

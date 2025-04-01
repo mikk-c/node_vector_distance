@@ -14,6 +14,8 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="node_vector_distance._make_tensor" href="node_vector_distance._make_tensor.html" />
+    <link rel="prev" title="node_vector_distance" href="../node_vector_distance.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -68,6 +70,12 @@ whatever order edge attributes have in the first edge in <cite>G</cite>.</p>
 to be either <cite>“gpu”</cite> (the default), or <cite>“cpu”</cite>. If <cite>workflow=”gpu”</cite> (the default) then
 <cite>AttrGraph.data</cite> is actually a <code class="xref py py-class docutils literal notranslate"><span class="pre">torch_geometric.data.Data</span></code> object. If
 <cite>workflow=”cpu”</cite>, then <cite>AttrGraph.data</cite> is a dictionary containing <cite>G</cite> and <cite>df</cite>.</p>
+<p>Since <code class="docutils literal notranslate"><span class="pre">NVD</span></code> methods only work on networks with a single connected component, and
+<code class="docutils literal notranslate"><span class="pre">torch_geometric</span></code> requires numeric ids without gaps, <cite>AttrGraph.data</cite> will only
+contain the nodes and edges in the largest connected component of <cite>G</cite>. Moreover, the
+node ids of <cite>G</cite> will be changed so that they start from <cite>0`to `n</cite> without gaps. For
+your convenience, <cite>AttrGraph.nodemap</cite> contains a dictionary that maps the node ids
+in <cite>G`with the node ids in `AttrGraph.data</cite>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="node_vector_distance.AttrGraph.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_attr_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gpu'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#node_vector_distance.AttrGraph.__init__" title="Link to this definition">¶</a></dt>
@@ -112,15 +120,25 @@ to be either <cite>“gpu”</cite> (the default), or <cite>“cpu”</cite>. If
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference.html">Functions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../node_vector_distance.html"><code class="docutils literal notranslate"><span class="pre">node_vector_distance</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../correlation.html"><code class="docutils literal notranslate"><span class="pre">correlation</span></code></a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../reference.html">Functions</a><ul>
+  <li><a href="../node_vector_distance.html"><code class="docutils literal notranslate"><span class="pre">node_vector_distance</span></code></a><ul>
+      <li>Previous: <a href="../node_vector_distance.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">node_vector_distance</span></code></a></li>
+      <li>Next: <a href="node_vector_distance._make_tensor.html" title="next chapter">node_vector_distance._make_tensor</a></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
