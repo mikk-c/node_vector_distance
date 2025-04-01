@@ -1,10 +1,6 @@
-import torch
-import numpy as np
-from .utils import _Linv_cpu, _Linv_gpu, _er_cpu, _er_gpu
-
 """
-``node_vector_distance.correlation``
-------------------------------------
+``correlation``
+---------------
 
 This module provides the network correlation function.
 
@@ -18,6 +14,10 @@ Summary
    network_correlation
 
 """
+
+import torch
+import numpy as np
+from .utils import _Linv_cpu, _Linv_gpu, _er_cpu, _er_gpu
 
 def _corr_cpu(data, i, j, Linv = None, ER = None, W = None):
    if W is None:

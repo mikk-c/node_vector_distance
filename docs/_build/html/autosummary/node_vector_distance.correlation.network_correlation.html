@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>node_vector_distance.correlation.network_correlation &#8212; Node Vector Distance 0.0.20 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=056c92e6"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="correlation" href="../correlation.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="node-vector-distance-correlation-network-correlation">
+<h1>node_vector_distance.correlation.network_correlation<a class="headerlink" href="#node-vector-distance-correlation-network-correlation" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="node_vector_distance.correlation.network_correlation">
+<span class="sig-prename descclassname"><span class="pre">node_vector_distance.correlation.</span></span><span class="sig-name descname"><span class="pre">network_correlation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attr_graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v1_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v2_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Linv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ER</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gpu'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#node_vector_distance.correlation.network_correlation" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the correlation of two numeric node attribute vectors over a given network.</p>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
+<dl>
+<dt>attr_graph<span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">AttrGraph</span></code></span></dt><dd><p>The attributed graph container with the graph in <code class="docutils literal notranslate"><span class="pre">attr_graph.data[&quot;edges&quot;]</span></code> and the node attributes
+in <code class="docutils literal notranslate"><span class="pre">attr_graph.data[&quot;node_vects&quot;]</span></code>.</p>
+</dd>
+<dt>v1_index<span class="classifier">int</span></dt><dd><p>The index of the first node vector with which to calculate the correlation.</p>
+</dd>
+<dt>v2_index<span class="classifier">int</span></dt><dd><p>The index of the second node vector with which to calculate the correlation.</p>
+</dd>
+<dt>Linv<span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>, optional</span></dt><dd><p>The matrix containing the pseudoinverse of the Laplacian of <code class="docutils literal notranslate"><span class="pre">attr_graph</span></code>. If not provided, and both
+<code class="docutils literal notranslate"><span class="pre">W</span></code> and <code class="docutils literal notranslate"><span class="pre">ER</span></code> are <code class="docutils literal notranslate"><span class="pre">None</span></code>, it will be computed automatically but not cached. Should be a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code> if using <code class="docutils literal notranslate"><span class="pre">workflow=&quot;cpu&quot;</span></code>, or a <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> if using
+<code class="docutils literal notranslate"><span class="pre">workflow=&quot;gpu&quot;</span></code> (the default).</p>
+</dd>
+<dt>ER<span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>, optional</span></dt><dd><p>The matrix containing the effective resistance matrix of <code class="docutils literal notranslate"><span class="pre">attr_graph</span></code>. If not provided, and <code class="docutils literal notranslate"><span class="pre">W</span></code> is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, it will be computed automatically but not cached. Should be a <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code> if
+using <code class="docutils literal notranslate"><span class="pre">workflow=&quot;cpu&quot;</span></code>, or a <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> if using <code class="docutils literal notranslate"><span class="pre">workflow=&quot;gpu&quot;</span></code> (the default).</p>
+</dd>
+<dt>W<span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>, optional</span></dt><dd><p>The weight matrix for the correlation on <code class="docutils literal notranslate"><span class="pre">attr_graph</span></code>, defined as <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">/</span> <span class="pre">exp(ER)</span></code>. If not provided,
+it will be computed automatically but not cached. Should be a <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code> if using
+<code class="docutils literal notranslate"><span class="pre">workflow=&quot;cpu&quot;</span></code>, or a <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> if using <code class="docutils literal notranslate"><span class="pre">workflow=&quot;gpu&quot;</span></code> (the default).</p>
+</dd>
+<dt>workflow<span class="classifier">str, optional (default: “gpu”)</span></dt><dd><p>Specifies whether to use the torch functions (if equal to “gpu”) or the numpy functions (if equal to
+“cpu”). Defaults to “gpu”.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h2>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>float</dt><dd><p>The correlation value, a float number between -1 (perfect negative correlation), and +1 (perfect
+positive correlation) with 0 implying no correlation.</p>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h2>Raises<a class="headerlink" href="#raises" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>AttributeError</dt><dd><p>If passing an <code class="docutils literal notranslate"><span class="pre">attr_graph</span></code> built with a different <code class="docutils literal notranslate"><span class="pre">workflow</span></code> than the one specified by the
+parameter.</p>
+</dd>
+<dt>TypeError</dt><dd><p>If passing a cached <code class="docutils literal notranslate"><span class="pre">Linv</span></code>, <code class="docutils literal notranslate"><span class="pre">ER</span></code>, or <code class="docutils literal notranslate"><span class="pre">W</span></code> built with a different <code class="docutils literal notranslate"><span class="pre">workflow</span></code> than the one
+specified by the parameter.</p>
+</dd>
+<dt>IndexError</dt><dd><p>If either <code class="docutils literal notranslate"><span class="pre">v1_index</span></code> or <code class="docutils literal notranslate"><span class="pre">v2_index</span></code> exceed the number of node attributes in <code class="docutils literal notranslate"><span class="pre">attr_graph</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h2>
+<p>The network correlation of two vectors <span class="math notranslate nohighlight">\(v_1\)</span> and <span class="math notranslate nohighlight">\(v_2\)</span> is defined in <a class="reference internal" href="../index.html#network-pearson" id="id1"><span>[network-pearson]</span></a>
+as:</p>
+<div class="math notranslate nohighlight">
+\[\rho(v_1, v_2, G) = \dfrac{\mathrm{sum}(W \times (\hat{v_1} \otimes \hat{v_2}))}
+                           {\sigma_{v_1,W} \sigma_{v_2,W}},\]</div>
+<p>where <span class="math notranslate nohighlight">\(W\)</span> is one over the exponential effective resistance matrix of graph <span class="math notranslate nohighlight">\(G\)</span>,
+<span class="math notranslate nohighlight">\(\hat{v}\)</span> is a vector <span class="math notranslate nohighlight">\(v\)</span> minus its average, <span class="math notranslate nohighlight">\(\otimes\)</span> indicates the outer product,
+and <span class="math notranslate nohighlight">\(\sigma_{v,W} = \sqrt{\mathrm{sum}(W \times (\hat{v} \otimes \hat{v}))}\)</span> is a measure of
+network variance of vector <span class="math notranslate nohighlight">\(v\)</span> over <span class="math notranslate nohighlight">\(G\)</span>.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>
+<div role="list" class="citation-list">
+<div class="citation" id="network-pearson" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">network-pearson</a><span class="fn-bracket">]</span></span>
+<p>Coscia, Michele. “Pearson correlations on complex networks.” Journal of Complex
+Networks 9, no. 6 (2021): cnab036. :doi:10.1093/comnet/cnab036</p>
+</div>
+</div>
+</section>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Node Vector Distance</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../correlation.html"><code class="docutils literal notranslate"><span class="pre">correlation</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../reference.html">Functions</a><ul>
+  <li><a href="../correlation.html"><code class="docutils literal notranslate"><span class="pre">correlation</span></code></a><ul>
+      <li>Previous: <a href="../correlation.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">correlation</span></code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Michele Coscia.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/autosummary/node_vector_distance.correlation.network_correlation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

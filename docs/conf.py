@@ -18,7 +18,8 @@ release = '0.0.20'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.autodoc',]
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.autosummary']
+autodoc_mock_imports = ['torch', 'torch_geometric', 'networkx', 'numpy', 'scipy']
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']

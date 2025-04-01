@@ -1,3 +1,4 @@
+sphinx
 nbsphinx
 node_vector_distance
 numpy
