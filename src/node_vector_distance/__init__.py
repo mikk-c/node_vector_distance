@@ -28,7 +28,7 @@ __author__ = "Michele Coscia <mcos@itu.dk>"
 
 import torch
 
-__version__ = "0.0.20"
+__version__ = "0.0.21"
 __device__ = "cuda" if torch.cuda.is_available() else "cpu"
 
 from .utils import *
@@ -91,20 +91,23 @@ class AttrGraph(object):
             G is not a networkx Graph.
          """)
       G, df, self.nodemap = _extract_lcc(G, df)
-      if not G.has_edge(0, 1):
-         raise ValueError("""
-            The Graph doesn't have edge 0,1. It was likely badly constructed.
-         """)
-      if "weight" in G[0][1]:
+      edge_attrs = next(iter(G.edges(data = True)))[2]
+      if "weight" in edge_attrs:
          edge_weights = []
       else:
          edge_weights = [1.] * len(G.edges) * 2
       if edge_attr_order is None:
-         edge_attr_order = [attr for attr in G[0][1] if attr != "weight"]
+         edge_attr_order = [attr for attr in edge_attrs if attr != "weight"]
       if workflow == "gpu":
          self.data = _make_tensor(G, df, edge_attr_order, edge_weights)
       else:
          self.data = _make_graph(G, df, edge_attr_order, edge_weights)
+
+   def update_node_vects(self, df, workflow = "gpu"):
+      if workflow == "gpu":
+         self.data.node_vects = torch.tensor(df.values).float().to(__device__)
+      else:
+         self.data["node_vects"] = df
 
 ################################################################################
 # Utility functions

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "node_vector_distance"
-version = "0.0.20"
+version = "0.0.21"
 authors = [
   { name="Michele Coscia", email="mcos@itu.dk" },
 ]
