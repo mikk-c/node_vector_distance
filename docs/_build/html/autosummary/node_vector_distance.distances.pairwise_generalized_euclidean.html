@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>node_vector_distance.distances.pairwise_generalized_euclidean &#8212; Node Vector Distance 0.0.20 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=056c92e6"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="node-vector-distance-distances-pairwise-generalized-euclidean">
+<h1>node_vector_distance.distances.pairwise_generalized_euclidean<a class="headerlink" href="#node-vector-distance-distances-pairwise-generalized-euclidean" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="node_vector_distance.distances.pairwise_generalized_euclidean">
+<span class="sig-prename descclassname"><span class="pre">node_vector_distance.distances.</span></span><span class="sig-name descname"><span class="pre">pairwise_generalized_euclidean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attr_graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Linv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gpu'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#node_vector_distance.distances.pairwise_generalized_euclidean" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the pairwise generalized euclidean distance for all pairs of node attributes in the graph.
+It is more efficient than a nested loop over all possible node attribute pairs.</p>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
+<dl>
+<dt>attr_graph<span class="classifier"><a class="reference internal" href="node_vector_distance.AttrGraph.html#node_vector_distance.AttrGraph" title="node_vector_distance.AttrGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">AttrGraph</span></code></a></span></dt><dd><p>The attributed graph container with the graph in <code class="docutils literal notranslate"><span class="pre">attr_graph.data[&quot;edges&quot;]</span></code> and the node attributes
+in <code class="docutils literal notranslate"><span class="pre">attr_graph.data[&quot;node_vects&quot;]</span></code>.</p>
+</dd>
+<dt>Linv<span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>, optional</span></dt><dd><p>The matrix containing the pseudoinverse of the Laplacian of <code class="docutils literal notranslate"><span class="pre">attr_graph</span></code>. If not provided`, it will
+be computed automatically but not cached. Should be a <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code> if using
+<code class="docutils literal notranslate"><span class="pre">workflow=&quot;cpu&quot;</span></code>, or a <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> if using <code class="docutils literal notranslate"><span class="pre">workflow=&quot;gpu&quot;</span></code> (the default).</p>
+</dd>
+<dt>workflow<span class="classifier">str, optional (default: “gpu”)</span></dt><dd><p>Specifies whether to use the torch functions (if equal to “gpu”) or the numpy functions (if equal to
+“cpu”). Defaults to “gpu”.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h2>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></dt><dd><p>The distance matrix, with one row/column per node attribute. The order is the same as the node vectors
+in <code class="docutils literal notranslate"><span class="pre">attr_graph</span></code>. Each cell contains the distance between the corresponding node attributes. The
+return type depends on the value of the <code class="docutils literal notranslate"><span class="pre">workflow</span></code> parameter: <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> if using
+<code class="docutils literal notranslate"><span class="pre">workflow=&quot;gpu&quot;</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code> if using <code class="docutils literal notranslate"><span class="pre">workflow=&quot;cpu&quot;</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h2>Raises<a class="headerlink" href="#raises" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>AttributeError</dt><dd><p>If passing an <code class="docutils literal notranslate"><span class="pre">attr_graph</span></code> built with a different <code class="docutils literal notranslate"><span class="pre">workflow</span></code> than the one specified by the
+parameter.</p>
+</dd>
+<dt>TypeError</dt><dd><p>If passing a cached <code class="docutils literal notranslate"><span class="pre">Linv</span></code> built with a different <code class="docutils literal notranslate"><span class="pre">workflow</span></code> than the one specified by the
+parameter.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Node Vector Distance</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Functions</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Michele Coscia.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/autosummary/node_vector_distance.distances.pairwise_generalized_euclidean.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

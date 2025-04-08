@@ -14,6 +14,7 @@
    .. autosummary::
    
       ~AttrGraph.__init__
+      ~AttrGraph.update_node_vects
    
    
 

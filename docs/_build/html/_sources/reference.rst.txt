@@ -7,4 +7,5 @@ Functions
   :titlesonly:
 
   node_vector_distance
+  distances
   correlation

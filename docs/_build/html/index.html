@@ -37,7 +37,7 @@
 <p><code class="docutils literal notranslate"><span class="pre">Node</span> <span class="pre">Vector</span> <span class="pre">Distance</span></code> (or <code class="docutils literal notranslate"><span class="pre">NVD</span></code>) is a Python module to calculate efficiently several node attribute measures.</p>
 <p>The library currently provides unique methods to:</p>
 <ol class="arabic simple">
-<li><p>Calculate Euclidean distances <a class="reference internal" href="#generalized-euclidean" id="id1"><span>[generalized-euclidean]</span></a> and correlations <a class="reference internal" href="#network-pearson" id="id2"><span>[network-pearson]</span></a> between pairs of node attributes over the graph, or the variance <a class="reference internal" href="#graph-variance" id="id3"><span>[graph-variance]</span></a> of a node attribute.</p></li>
+<li><p>Calculate Euclidean distances <a class="reference internal" href="autosummary/node_vector_distance.distances.generalized_euclidean.html#generalized-euclidean" id="id1"><span>[generalized-euclidean]</span></a> and correlations <a class="reference internal" href="#network-pearson" id="id2"><span>[network-pearson]</span></a> between pairs of node attributes over the graph, or the variance <a class="reference internal" href="#graph-variance" id="id3"><span>[graph-variance]</span></a> of a node attribute.</p></li>
 <li><p>Generate efficiently useful graph matrix representations such as the <a class="reference external" href="https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse">pseudoinverse</a> of the <a class="reference external" href="https://en.wikipedia.org/wiki/Laplacian_matrix">Laplacian</a> and the <a class="reference external" href="https://en.wikipedia.org/wiki/Resistance_distance">effective resistance</a> matrix.</p></li>
 <li><p>Integrate with <a class="reference external" href="https://pytorch.org/">torch</a> and <a class="reference external" href="https://pytorch-geometric.readthedocs.io/en/latest/">torch-geometric</a> which can lead to perform the above tasks on the GPU, orders of magnitude faster than using standard CPU solutions.</p></li>
 </ol>
@@ -78,6 +78,7 @@
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference.html">Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="node_vector_distance.html"><code class="docutils literal notranslate"><span class="pre">node_vector_distance</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="distances.html"><code class="docutils literal notranslate"><span class="pre">distances</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="correlation.html"><code class="docutils literal notranslate"><span class="pre">correlation</span></code></a></li>
 </ul>
 </li>
