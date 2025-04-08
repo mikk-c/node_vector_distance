@@ -104,7 +104,7 @@ def generalized_euclidean(attr_graph, v1_index, v2_index, Linv = None, workflow 
 
    .. math::
    
-      \rho(v_1, v_2, G) = \sqrt{(v_1 - v_2)^T L^\dagger (v_1 - v_2))},
+      \delta(v_1, v_2, G) = \sqrt{(v_1 - v_2)^T L^\dagger (v_1 - v_2))},
 
    where :math:`L^\dagger` is the Moore-Penrose pseudoinverse of the Laplacian of graph :math:`G`, and
    :math:`v` is a numerical vector with one value per node.
