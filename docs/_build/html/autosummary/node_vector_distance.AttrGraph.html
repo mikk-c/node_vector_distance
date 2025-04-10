@@ -64,7 +64,7 @@ column is an edge attribute, with the same order as specified in <cite>edge_attr
 <p>You can specify the order in which the edge attributes should be stored, which is useful
 if you use a GPU workflow and therefore will work with a
 <code class="xref py py-class docutils literal notranslate"><span class="pre">torch_geometric.data.Data</span></code>. This can be done by passing the list of attributes
-names as the <cite>edge_attr_order</cite> optionl parameter. If not passed, it will default with
+names as the <cite>edge_attr_order</cite> optional parameter. If not passed, it will default with
 whatever order edge attributes have in the first edge in <cite>G</cite>.</p>
 <p>To specify which workflow you want to use, you can set the optional <cite>workflow</cite> parameter
 to be either <cite>“gpu”</cite> (the default), or <cite>“cpu”</cite>. If <cite>workflow=”gpu”</cite> (the default) then
@@ -87,8 +87,8 @@ in <cite>G`with the node ids in `AttrGraph.data</cite>.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#node_vector_distance.AttrGraph.__init__" title="node_vector_distance.AttrGraph.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(G, df[, edge_attr_order, workflow])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_node_vects</span></code>(df[, workflow])</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_node_vects</span></code>(df)</p></td>
+<td><p>Updates the graph's node vectors.</p></td>
 </tr>
 </tbody>
 </table>
@@ -127,6 +127,7 @@ in <cite>G`with the node ids in `AttrGraph.data</cite>.</p>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Functions</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../node_vector_distance.html"><code class="docutils literal notranslate"><span class="pre">node_vector_distance</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../distances.html"><code class="docutils literal notranslate"><span class="pre">distances</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../correlation.html"><code class="docutils literal notranslate"><span class="pre">correlation</span></code></a></li>
 </ul>
 </li>

@@ -38,7 +38,46 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="node_vector_distance._make_tensor">
 <span class="sig-prename descclassname"><span class="pre">node_vector_distance.</span></span><span class="sig-name descname"><span class="pre">_make_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_attr_order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_weights</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#node_vector_distance._make_tensor" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Creates a <code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code> that can be used as the data container to
+calculate network distances. This can be useful if you already preprocessed your data and don’t
+need to build an <a class="reference internal" href="node_vector_distance.AttrGraph.html#node_vector_distance.AttrGraph" title="node_vector_distance.AttrGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">AttrGraph</span></code></a> with its default constructor. However,
+this skips a lot of checks so it might be tricky to use, see Notes.</p>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
+<dl>
+<dt>G<span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Graph</span></code></span></dt><dd><p>The object containing the edges of the graph with their attributes.</p>
+</dd>
+<dt>df<span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span></dt><dd><p>The object containing the node attributes of the graph.</p>
+</dd>
+<dt>edge_attr_order<span class="classifier">list</span></dt><dd><p>The list containing the order in which you want to store the edge attributes in the tensor.
+Can be an empty list if the graph has no edge attributes. Do not use this for edge weights.</p>
+</dd>
+<dt>edge_weights<span class="classifier">list</span></dt><dd><p>The list containing the edge weights. If empty, the object won’t be created properly. If your
+graph is unweighted, you must pass a list of ones.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h2>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></dt><dd><p>The data frame containing all the information in your graph.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h2>
+<p>The returned object cannot be used “as is” with the functions of this library. It needs to be
+wrapped as the “data” key in a dictionary.</p>
+<p>Note that all functions assume that the graph has a single connected component. This is enforced
+when creating a standard <a class="reference internal" href="node_vector_distance.AttrGraph.html#node_vector_distance.AttrGraph" title="node_vector_distance.AttrGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">AttrGraph</span></code></a>, but it is not checked here.
+Passing a graph with multiple connected components will cause issues.</p>
+<p>Creating a standard <a class="reference internal" href="node_vector_distance.AttrGraph.html#node_vector_distance.AttrGraph" title="node_vector_distance.AttrGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">AttrGraph</span></code></a> also enforces numeric node ids
+without gaps. Also this is not enforced here. Providing non-numeric node ids and/or ids with
+gaps will cause issues. For instance, id gaps will be interpreted as isolated nodes.</p>
+<p>By using this function, you won’t have an <cite>AttrGraph.nodemap</cite> attribute, so it is up to you to
+keep track of which node has which id.</p>
+</section>
+</dd></dl>
 
 </section>
 
@@ -73,6 +112,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Functions</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../node_vector_distance.html"><code class="docutils literal notranslate"><span class="pre">node_vector_distance</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../distances.html"><code class="docutils literal notranslate"><span class="pre">distances</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../correlation.html"><code class="docutils literal notranslate"><span class="pre">correlation</span></code></a></li>
 </ul>
 </li>

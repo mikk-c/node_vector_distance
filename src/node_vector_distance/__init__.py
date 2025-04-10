@@ -70,7 +70,7 @@ class AttrGraph(object):
    You can specify the order in which the edge attributes should be stored, which is useful
    if you use a GPU workflow and therefore will work with a
    :class:`torch_geometric.data.Data`. This can be done by passing the list of attributes
-   names as the `edge_attr_order` optionl parameter. If not passed, it will default with
+   names as the `edge_attr_order` optional parameter. If not passed, it will default with
    whatever order edge attributes have in the first edge in `G`.
 
    To specify which workflow you want to use, you can set the optional `workflow` parameter
@@ -90,6 +90,7 @@ class AttrGraph(object):
          raise ValueError("""
             G is not a networkx Graph.
          """)
+      self.workflow = workflow
       G, df, self.nodemap = _extract_lcc(G, df)
       edge_attrs = next(iter(G.edges(data = True)))[2]
       if "weight" in edge_attrs:
@@ -103,8 +104,19 @@ class AttrGraph(object):
       else:
          self.data = _make_graph(G, df, edge_attr_order, edge_weights)
 
-   def update_node_vects(self, df, workflow = "gpu"):
-      if workflow == "gpu":
+   def update_node_vects(self, df):
+      r"""Updates the graph's node vectors.
+
+      Parameters
+      ----------
+      df : :class:`~pandas.DataFrame`
+         A :class:`~pandas.DataFrame` containing the node attributes. Each attribute is one column
+         of the data frame and each row is a node. The nodes must be sorted coherently with the node
+         ids of the :class:`~node_vector_distance.AttrGraph` otherwise the distances calculated won't
+         make sense. So the first       row must correspond with node with id `0`m the second row
+         with node id `1`, and so on.
+      """
+      if self.workflow == "gpu":
          self.data.node_vects = torch.tensor(df.values).float().to(__device__)
       else:
          self.data["node_vects"] = df
@@ -114,6 +126,45 @@ class AttrGraph(object):
 ################################################################################
 
 def _make_tensor(G, df, edge_attr_order, edge_weights):
+   r"""Creates a :class:`~torch_geometric.data.Data` that can be used as the data container to
+   calculate network distances. This can be useful if you already preprocessed your data and don't
+   need to build an :class:`~node_vector_distance.AttrGraph` with its default constructor. However,
+   this skips a lot of checks so it might be tricky to use, see Notes.
+
+   Parameters
+   ----------
+   G : :class:`~networkx.Graph`
+      The object containing the edges of the graph with their attributes.
+   df : :class:`~pandas.DataFrame`
+      The object containing the node attributes of the graph.
+   edge_attr_order : list
+      The list containing the order in which you want to store the edge attributes in the tensor.
+      Can be an empty list if the graph has no edge attributes. Do not use this for edge weights.
+   edge_weights : list
+      The list containing the edge weights. If empty, the object won't be created properly. If your
+      graph is unweighted, you must pass a list of ones.
+
+   Returns
+   -------
+   :class:`~torch_geometric.data.Data`
+      The data frame containing all the information in your graph.
+
+   Notes
+   -----
+   The returned object cannot be used "as is" with the functions of this library. It needs to be
+   wrapped as the "data" key in a dictionary.
+
+   Note that all functions assume that the graph has a single connected component. This is enforced
+   when creating a standard :class:`~node_vector_distance.AttrGraph`, but it is not checked here.
+   Passing a graph with multiple connected components will cause issues.
+
+   Creating a standard :class:`~node_vector_distance.AttrGraph` also enforces numeric node ids
+   without gaps. Also this is not enforced here. Providing non-numeric node ids and/or ids with
+   gaps will cause issues. For instance, id gaps will be interpreted as isolated nodes.
+
+   By using this function, you won't have an `AttrGraph.nodemap` attribute, so it is up to you to
+   keep track of which node has which id.
+   """
    edge_index = [[], []]
    edge_attr = []
    hasweights = len(edge_weights) == 0
@@ -138,11 +189,50 @@ def _make_tensor(G, df, edge_attr_order, edge_weights):
    return tensor
 
 def _make_graph(G, df, edge_attr_order, edge_weights):
+   r"""Creates a dictionary that can be used as the data container to  calculate network distances.
+   This can be useful if you already preprocessed your data and don't need to build an
+   :class:`~node_vector_distance.AttrGraph` with its default constructor. However, this skips a lot
+   of checks so it might be tricky to use, see Notes.
+
+   Parameters
+   ----------
+   G : :class:`~networkx.Graph`
+      The object containing the edges of the graph with their attributes.
+   df : :class:`~pandas.DataFrame`
+      The object containing the node attributes of the graph.
+   edge_attr_order : list
+      The list containing the order in which you want to store the edge attributes in the tensor.
+      Can be an empty list if the graph has no edge attributes. Do not use this for edge weights.
+   edge_weights : list
+      The list containing the edge weights. If empty, the object won't be created properly. If your
+      graph is unweighted, you must pass a list of ones.
+
+   Returns
+   -------
+   dict
+      The dictionary containing all the information in your graph.
+
+   Notes
+   -----
+   The returned object cannot be used "as is" with the functions of this library. It needs to be
+   wrapped as the "data" key in a dictionary.
+
+   Note that all functions assume that the graph has a single connected component. This is enforced
+   when creating a standard :class:`~node_vector_distance.AttrGraph`, but it is not checked here.
+   Passing a graph with multiple connected components will cause issues.
+
+   Creating a standard :class:`~node_vector_distance.AttrGraph` also enforces numeric node ids
+   without gaps. Also this is not enforced here. Providing non-numeric node ids and/or ids with
+   gaps will cause issues. For instance, id gaps will be interpreted as isolated nodes.
+
+   By using this function, you won't have an `AttrGraph.nodemap` attribute, so it is up to you to
+   keep track of which node has which id.
+   """
    data = {}
    data["edge_index"] = G
    data["node_vects"] = df
    data["edge_weights"] = np.array([e[2]["weight"] for e in G.edges(data = True)]) if len(edge_weights) == 0 else edge_weights[::2]
-   data["edge_attrs"] = np.array([[e[2][attr] for attr in edge_attr_order] for e in G.edges(data = True)])
+   data["edge_attr"] = np.array([[e[2][attr] for attr in edge_attr_order] for e in G.edges(data = True)])
    return data
 
 #### Making sure G has the correct node ids (from 0 to n without gaps)
